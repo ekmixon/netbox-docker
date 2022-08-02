@@ -43,24 +43,20 @@ for permission_name, permission_details in object_permissions.items():
 
     if permission_details.get("groups", 0):
         for groupname in permission_details["groups"]:
-            group = AdminGroup.objects.filter(name=groupname).first()
-
-            if group:
+            if group := AdminGroup.objects.filter(name=groupname).first():
                 object_permission.groups.add(group)
                 print(
-                    " 👥 Assigned group %s object permission of %s"
-                    % (groupname, object_permission.name)
+                    f" 👥 Assigned group {groupname} object permission of {object_permission.name}"
                 )
+
 
     if permission_details.get("users", 0):
         for username in permission_details["users"]:
-            user = AdminUser.objects.filter(username=username).first()
-
-            if user:
+            if user := AdminUser.objects.filter(username=username).first():
                 object_permission.users.add(user)
                 print(
-                    " 👤 Assigned user %s object permission of %s"
-                    % (username, object_permission.name)
+                    f" 👤 Assigned user {username} object permission of {object_permission.name}"
                 )
+
 
     object_permission.save()

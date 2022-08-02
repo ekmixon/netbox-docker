@@ -14,7 +14,7 @@ from os.path import abspath, dirname, join
 # Read secret from file
 def _read_secret(secret_name, default = None):
     try:
-        f = open('/run/secrets/' + secret_name, 'r', encoding='utf-8')
+        f = open(f'/run/secrets/{secret_name}', 'r', encoding='utf-8')
     except EnvironmentError:
         return default
     else:

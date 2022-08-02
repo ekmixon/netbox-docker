@@ -8,7 +8,7 @@ from django_auth_ldap.config import LDAPSearch
 # Read secret from file
 def _read_secret(secret_name, default=None):
     try:
-        f = open('/run/secrets/' + secret_name, 'r', encoding='utf-8')
+        f = open(f'/run/secrets/{secret_name}', 'r', encoding='utf-8')
     except EnvironmentError:
         return default
     else:
@@ -51,15 +51,20 @@ AUTH_LDAP_USER_SEARCH_ATTR = environ.get('AUTH_LDAP_USER_SEARCH_ATTR', 'sAMAccou
 AUTH_LDAP_USER_SEARCH = LDAPSearch(
     AUTH_LDAP_USER_SEARCH_BASEDN,
     ldap.SCOPE_SUBTREE,
-    "(" + AUTH_LDAP_USER_SEARCH_ATTR + "=%(user)s)"
+    f"({AUTH_LDAP_USER_SEARCH_ATTR}=%(user)s)",
 )
+
 
 # This search ought to return all groups to which the user belongs. django_auth_ldap uses this to determine group
 # heirarchy.
 AUTH_LDAP_GROUP_SEARCH_BASEDN = environ.get('AUTH_LDAP_GROUP_SEARCH_BASEDN', '')
 AUTH_LDAP_GROUP_SEARCH_CLASS = environ.get('AUTH_LDAP_GROUP_SEARCH_CLASS', 'group')
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch(AUTH_LDAP_GROUP_SEARCH_BASEDN, ldap.SCOPE_SUBTREE,
-                                    "(objectClass=" + AUTH_LDAP_GROUP_SEARCH_CLASS + ")")
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    AUTH_LDAP_GROUP_SEARCH_BASEDN,
+    ldap.SCOPE_SUBTREE,
+    f"(objectClass={AUTH_LDAP_GROUP_SEARCH_CLASS})",
+)
+
 AUTH_LDAP_GROUP_TYPE = _import_group_type(environ.get('AUTH_LDAP_GROUP_TYPE', 'GroupOfNamesType'))
 
 # Define a group required to login.

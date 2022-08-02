@@ -54,7 +54,7 @@ def read_configurations(config_module, config_dir, main_config):
             module_name = f"{config_module}.{f.name[:-len('.py')]}".replace(".", "_")
             _import(module_name, f.path, loaded_configurations)
 
-    if len(loaded_configurations) == 0:
+    if not loaded_configurations:
         print(f"‼️ No configuration files found in '{config_dir}'.")
         raise ImportError(f"No configuration files found in '{config_dir}'.")
 
